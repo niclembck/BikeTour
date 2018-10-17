@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import _ from 'lodash';
+import polyline from 'polyline';
 
 import TourSection from './TourSection';
 
 class Accordion extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       isExpanded: this.props.isExpanded,
       realData: {}
@@ -15,18 +15,19 @@ class Accordion extends Component {
   }
 
   componentDidMount() {
-    if (this.state.isExpanded) {
-      this.setState({ realData: this.props.data.realData[0] });
-    }
+    this.setState({ realData: this.props.data.realData[0] });
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.state.isExpanded !== nextProps.isExpanded) {
-      this.setState({
-        isExpanded: nextProps.isExpanded,
-        realData: nextProps.data.realData[0]
-      });
+      this.setState({ isExpanded: nextProps.isExpanded });
     }
+  }
+
+  renderRealCoords = (coords) => {
+    const realCoords = polyline.decode(coords);
+    const switchedCoords = _.map(realCoords, r => _.reverse(r));
+    return switchedCoords;
   }
 
   render() {
@@ -34,22 +35,25 @@ class Accordion extends Component {
 
     return (
       <div>
-        <SectionHeader onClick={ this.props.handleClick }>
+        <SectionHeader onClick={ this.props.handleClick.bind(this) }>
           <SectionTitle id={ plannedData.id }>{ plannedData.title }</SectionTitle>
           { !this.state.isExpanded &&
             <div>Expand</div>
           }
         </SectionHeader>
-        <SectionBody isExpanded={ this.state.isExpanded }>
-          {
-            this.state.isExpanded &&
-            <TourSection
-              plannedData={ plannedData }
-              realData={ this.state.realData }
-              center={ plannedData.center }
-            />
-          }
-        </SectionBody>
+        { this.state.isExpanded &&
+          <SectionBody isExpanded={ this.state.isExpanded }>
+            {
+              this.state.isExpanded &&
+              <TourSection
+                plannedData={ plannedData }
+                realData={ realData[0] }
+                center={ plannedData.center }
+                isExpanded={ this.state.isExpanded }
+              />
+            }
+          </SectionBody>
+        }
       </div>
     );
   }
@@ -58,13 +62,13 @@ class Accordion extends Component {
 export default Accordion;
 
 const SectionHeader = styled.div`
-  padding: 10px 20px;
   display: flex;
   align-items: center;
   border-bottom: 1px solid #d0d0d0;
   cursor: pointer;
 `;
 const SectionTitle = styled.div`
+  padding: 10px 20px;
   font-size: 20px;
   flex: 1;
 `;

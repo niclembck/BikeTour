@@ -8,6 +8,7 @@ import { fetchActivityList } from '../../actions/strava.actions';
 import { getActivityList } from '../../selectors/strava.selectors';
 
 import DynamicWaypoints from '../../components/DynamicWaypoints/DynamicWaypoints';
+import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 import TourSection from './TourSection';
 import Accordion from './Accordion';
 
@@ -51,10 +52,12 @@ class BikeTour extends Component {
 
   componentWillMount() {
     this.props.fetchActivityList();
-    this.setState({
-      tourActivities: this.props.activityList,
-      activeSectionIndex: this.props.activityList[0]
-    });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.isFetching && !_.isEmpty(nextProps.activityList)) {
+      this.setState({ isLoading: false });
+    }
   }
 
   componentDidUpdate(nextProps) {
@@ -85,13 +88,10 @@ class BikeTour extends Component {
   }
 
   handleAccordionClick = (e) => {
-    console.log('e', e.target.id);
     this.setState({ activeSectionIndex: e.target.id });
   }
 
   render() {
-    console.log('bikeTour props', this.props);
-    console.log('biikeTour state', this.state);
     const accordionData = _.map(plannedTourData, a => {
       const realTourData = _.filter(this.state.tourActivities, r => {
         return _.includes(r.name, a.id);
@@ -102,26 +102,31 @@ class BikeTour extends Component {
       };
     });
 
-    { this.state.isLoading && <div>Loading</div> }
-
     return (
-      <div>
-        <MapContainer>
-          <Map
-            style="mapbox://styles/niclembck/cjiwavesh9ggs2rl0vk8h2jkb"
-            center={ [-123.080312, 41.003205] }
-            containerStyle={{ width: '100%', height: '100%' }}
-            scrollZoom={ false }
-            zoom={ [5] }
-          >
-            <ZoomControl />
-          </Map>
-        </MapContainer>
-        <CenteredContent>
-          <DynamicWaypoints data={ sectionMap } />
-          { this.renderAccordionSections(accordionData) }
-        </CenteredContent>
-      </div>
+      <Container>
+        { this.state.isLoading
+          ? <LoadingContainer>
+              <LoadingSpinner />
+            </LoadingContainer>
+          : <div style={{ flex: 1 }}>
+              <MapContainer>
+                <Map
+                  style="mapbox://styles/niclembck/cjiwavesh9ggs2rl0vk8h2jkb"
+                  center={ [-123.080312, 41.003205] }
+                  containerStyle={{ width: '100%', height: '100%' }}
+                  scrollZoom={ false }
+                  zoom={ [5] }
+                >
+                  <ZoomControl />
+                </Map>
+              </MapContainer>
+              <CenteredContent>
+                <DynamicWaypoints data={ sectionMap } />
+                { this.renderAccordionSections(accordionData) }
+              </CenteredContent>
+            </div>
+        }
+      </Container>
     );
   }
 };
@@ -136,6 +141,18 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps, { fetchActivityList })(BikeTour);
 
+const Container = styled.div`
+  display: flex;
+  flex: 1;
+`;
+const LoadingContainer = styled.div`
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+`;
 const MapContainer = styled.div`
   width: 100%;
   height: 70vh;

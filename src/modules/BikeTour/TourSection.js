@@ -19,17 +19,11 @@ class TourSection extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    console.log('tourSection nextProps', nextProps);
-    if (this.props !== nextProps && !_.isEmpty(nextProps.realData)) {
-      console.log('different toursection props');
-      this.setState({ realCoords: this.renderRealCoords(nextProps.realData.map.summary_polyline) });
+  componentDidMount() {
+    if (this.props.realData) {
+      this.setState({ realCoords: this.renderRealCoords(this.props.realData.map.summary_polyline) });
     }
-  }
 
-  componentWillUpdate(prevProps, prevState) {
-    console.log('tour section will update props', prevProps);
-    console.log('tour section will update state', prevState);
   }
 
   renderRealCoords = (coords) => {
@@ -42,6 +36,7 @@ class TourSection extends Component {
     const {
       plannedData,
       realData,
+      realCoords,
       title,
       center
     } = this.props;
