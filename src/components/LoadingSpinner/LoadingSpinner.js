@@ -41,7 +41,7 @@ const Loader = styled.div `
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: #054f94;
+    background: #89cce7;
     margin: -3px 0 0 -3px;
   }
 
