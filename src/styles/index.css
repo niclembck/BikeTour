@@ -1,0 +1,94 @@
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Lato', sans-serif;
+}
+
+
+/* Typography */
+h1 {
+  font-size: 32px;
+  font-weight: 300;
+  margin: 0 0 10px;
+}
+
+h2 {
+  font-size: 25px;
+  font-weight: 600;
+  margin: 0 0 15px;
+}
+
+h3 {
+  font-size: 17px;
+  margin: 0 0 5px;
+  font-weight: 600;
+}
+
+h4 {
+  font-size: 17px;
+  font-weight: 400;
+  color: #9a9a9a;
+  margin: 0 0 10px;
+}
+
+p {
+  font-size: 16px;
+  line-height: 1.7;
+  color: #333;
+}
+
+/* Link class to add bottom line animation */
+a.animatedLink {
+  text-decoration: none;
+  position: relative;
+  transition: color .2s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+  a.animatedLink:before {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    height: 1px;
+    width: 0;
+    transition: width 0s cubic-bezier(0.4, 0.0, 0.2, 1), background .3s cubic-bezier(0.4, 0.0, 0.2, 1);
+  }
+    a.animatedLink:hover:before {
+      width: 100%;
+      background: #89cce7;
+      transition: width .3s cubic-bezier(0.4, 0.0, 0.2, 1);
+    }
+  a.animatedLink:after {
+    content: '';
+    display: block;
+    position: absolute;
+    right: 0;
+    bottom: -4px;
+    height: 1px;
+    width: 0;
+    background: #89cce7;
+    transition: width .3s cubic-bezier(0.4, 0.0, 0.2, 1);
+  }
+    a.animatedLink:hover:after {
+      width: 100%;
+      background: transparent;
+      transition: all 0s cubic-bezier(0.4, 0.0, 0.2, 1);
+    }
+
+.blueText {
+  color: #89cce7;
+}
+
+/* React Headroom component styles */
+.headroom:not(.headroom--unpinned) {
+  /*box-shadow: 0 1px 2px rgba(0, 0, 0, .15);*/
+  border-bottom: 1px solid #dedede;
+}
