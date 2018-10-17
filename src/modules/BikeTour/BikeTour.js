@@ -2,23 +2,18 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import styled from 'styled-components';
-import ReactMapboxGl, { Layer, Feature, ZoomControl } from 'react-mapbox-gl';
+import ReactMapboxGl, { ZoomControl } from 'react-mapbox-gl';
 
 import { fetchActivityList } from '../../actions/strava.actions';
 import { getActivityList } from '../../selectors/strava.selectors';
 
 import DynamicWaypoints from '../../components/DynamicWaypoints/DynamicWaypoints';
 import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
-import TourSection from './TourSection';
 import Accordion from './Accordion';
-
-import scServices from './data/scServices.json';
-import day1 from './data/day1.json';
 import plannedTourData from './data/plannedTourData';
-
 import LayoutStyles from '../../components/LayoutStyles/LayoutStyles';
 
-const { CenteredContent, FullBleed } = LayoutStyles;
+const { CenteredContent } = LayoutStyles;
 
 const sectionMap = [
   {

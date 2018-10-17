@@ -5,8 +5,6 @@ import polyline from 'polyline';
 
 import ReactMapboxGl, { Layer, Feature, ZoomControl } from 'react-mapbox-gl';
 
-import day1 from './data/day1.json';
-
 const Map = ReactMapboxGl({
   accessToken: 'pk.eyJ1IjoibmljbGVtYmNrIiwiYSI6ImNqaXdhcmZmeTA3eTAzcG1vMTF3Y28zNnEifQ.ryovh1VEY7DOK3p0FrtHFA'
 });
@@ -36,8 +34,6 @@ class TourSection extends Component {
     const {
       plannedData,
       realData,
-      realCoords,
-      title,
       center
     } = this.props;
 
