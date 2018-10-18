@@ -92,21 +92,35 @@ class TourSection extends Component {
                   </Legend>
 
                   <Row>
-                    <Flex>
+                    <StatContainer>
                       <Label>Distance</Label>
                       <div>{ _.round(realData.distance / 1609.344, 1) } miles</div>
-                    </Flex>
-                    <Flex>
+                    </StatContainer>
+                    <StatContainer>
+                      <Label>Average Speed</Label>
+                      <div>{ _.round(realData.average_speed * 2.245) } mph</div>
+                    </StatContainer>
+                    <StatContainer>
+                      <Label>Max Speed</Label>
+                      <div>{ _.round(realData.max_speed * 2.245) } mph</div>
+                    </StatContainer>
+                  </Row>
+                  <Row>
+                    <StatContainer>
                       <Label>Elevation Gain</Label>
                       <div>{ _.round(realData.total_elevation_gain * 3.28) } feet</div>
-                    </Flex>
+                    </StatContainer>
+                    <StatContainer>
+                      <Label>Max Elevation</Label>
+                      <div>{ _.round(realData.elev_high * 3.28) } feet</div>
+                    </StatContainer>
+                    <StatContainer>
+                      <Label>Min Elevation</Label>
+                      <div>{ _.round(realData.elev_low * 3.28) } feet</div>
+                    </StatContainer>
                   </Row>
-                  <div style={{ marginTop: 10 }}>
-                    <Label>Field Notes</Label>
-                    <div>{ realData.description }</div>
-                  </div>
                 </div>
-              : <div>I haven't ridden this part yet</div>
+              : <div>I didn't ride today</div>
             }
           </RightColumn>
         </Row>
@@ -119,6 +133,7 @@ export default TourSection;
 
 const Row = styled.div`
   display: flex;
+  flex-wrap: wrap;
 
   @media(max-width : 480px) {
     display: block;
@@ -157,6 +172,11 @@ const LegendBox = styled.div`
 const Title = styled.div`
   margin-bottom: 5px;
   font-weight: 600;
+`;
+const StatContainer = styled.div`
+  margin-bottom: 20px;
+  flex: 1;
+  min-width: 120px;
 `;
 const Label = styled.div`
   font-size: 13px;
